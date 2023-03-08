@@ -12,14 +12,19 @@ function output_image = rgb_to_ycbcr(input_filename)
 
     % Read in image
     input_img = imread(input_filename, "png");
+    output_img = zeros(size(input_img));
 
     % Iterate over each row and column
     for r = 1:size(input_img, 1)
         for c = 1:size(input_img, 2)
 
             % Get the current pixel into a form we can work with
-            px_rgb = reshape(input_img(r,c,:), [1,3]);
+            px_rgb = double(reshape(input_img(r,c,:), [3, 1])) ./ 256;
+            px_yCbCr = reshape(((convert_matrix * px_rgb) + [0; 0.5; 0.5]) .* 256, [1, 1, 3]);
+            output_img(r,c,:) = uint8(px_yCbCr);
         end
     end
+
+    imshow(output_img);
 end
 

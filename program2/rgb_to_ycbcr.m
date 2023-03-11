@@ -3,12 +3,12 @@ function output_image = rgb_to_ycbcr(input_filename)
     % Matrix for converting to YCbCr
     convert_matrix =    [ 0.299,    0.587,    0.114;
                          -0.16874, -0.33126,  0.5;
-                          0.5,     -0.41869, -0.08131 ]
+                          0.5,     -0.41869, -0.08131 ];
 
     % Matrix for converting back to RGB
     revert_matrix =     [ 1,        0,        1.402;
                           1,       -0.34414, -0.71414;
-                          1,        1.77200,  0       ]
+                          1,        1.77200,  0       ];
 
     % Read in image
     input_img = imread(input_filename, "png");
@@ -21,10 +21,10 @@ function output_image = rgb_to_ycbcr(input_filename)
             % Get the current pixel into a form we can work with
             px_rgb = double(reshape(input_img(r,c,:), [3, 1])) ./ 256;
             px_yCbCr = reshape(((convert_matrix * px_rgb) + [0; 0.5; 0.5]) .* 256, [1, 1, 3]);
-            output_img(r,c,:) = uint8(px_yCbCr);
+            output_img(r,c,:) = px_yCbCr;
         end
     end
-
-    imshow(output_img);
+    output_img = uint8(output_img);
+    imshow(output_image);
 end
 

@@ -1,4 +1,4 @@
-function output_image = rgb_to_ycbcr(input_filename)
+function output_img = rgb_to_ycbcr(input_filename)
     
     % Matrix for converting to YCbCr
     convert_matrix =    [ 0.299,    0.587,    0.114;
@@ -25,6 +25,6 @@ function output_image = rgb_to_ycbcr(input_filename)
         end
     end
     output_img = uint8(output_img);
-    imshow(output_image);
+    imshow(output_img);
 end
 

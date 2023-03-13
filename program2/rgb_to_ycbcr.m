@@ -37,7 +37,7 @@ function output_img = rgb_to_ycbcr(input_filename, scheme)
 
     % Convert it back to RGB
     % Iterate over each row and column
-    for r = 1:size(ou, 1)
+    for r = 1:size(input_img, 1)
         for c = 1:size(input_img, 2)
 
             % Get the current pixel into a form we can work with and

@@ -32,7 +32,26 @@ function output_img = rgb_to_ycbcr(input_filename, scheme)
     % Convert output image back to uint8 so it can be displayed
     output_img = uint8(output_img);
 
+    % Subsample the image
     output_img_subsampled = subsample_image(output_img, scheme);
+
+    % Convert it back to RGB
+    % Iterate over each row and column
+    for r = 1:size(ou, 1)
+        for c = 1:size(input_img, 2)
+
+            % Get the current pixel into a form we can work with and
+            % normalize it
+            px_rgb = double(reshape(input_img(r,c,:), [3, 1])) ./ 256;
+
+            % Perform the conversion
+            px_yCbCr = reshape(((convert_matrix * px_rgb) + [0; 0.5; 0.5]) .* 256, [1, 1, 3]);
+
+            % Store the resulting pixel into the output image
+            output_img(r,c,:) = px_yCbCr;
+        end
+    end
+
     subplot(1,2,1),imshow(output_img);
     subplot(1,2,2), imshow(output_img_subsampled);
 end

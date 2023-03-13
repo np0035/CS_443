@@ -1,4 +1,4 @@
-function output_img = chroma_subsampling(input_filename, scheme)
+function [output_img_rgb, output_img_ycbcr] = chroma_subsampling(input_filename, scheme)
     
     % Matrix for converting to YCbCr
     convert_matrix =    [ 0.299,    0.587,    0.114;
@@ -14,7 +14,8 @@ function output_img = chroma_subsampling(input_filename, scheme)
     fprintf("Subsampling %s...", input_filename);
     % Read in image
     input_img = imread(input_filename, "png");
-    output_img = zeros(size(input_img));
+    output_img_rgb = zeros(size(input_img));
+    output_img_ycbcr = zeros(size(input_img));
 
     % Iterate over each row and column
     for r = 1:size(input_img, 1)
@@ -28,19 +29,19 @@ function output_img = chroma_subsampling(input_filename, scheme)
             px_yCbCr = reshape(((convert_matrix * px_rgb) + [0; 0.5; 0.5]) .* 256, [1, 1, 3]);
 
             % Store the resulting pixel into the output image
-            output_img(r,c,:) = px_yCbCr;
+            output_img_ycbcr(r,c,:) = px_yCbCr;
         end
     end
     % Convert output image back to uint8 so it can be displayed
-    output_img = uint8(output_img);
+    output_img_ycbcr = uint8(output_img_ycbcr);
 
     % Subsample the image
-    output_img_subsampled = subsample_image(output_img, scheme);
+    output_img_subsampled = subsample_image(output_img_ycbcr, scheme);
 
     % Convert it back to RGB
     % Iterate over each row and column
-    for r = 1:size(input_img, 1)
-        for c = 1:size(input_img, 2)
+    for r = 1:size(output_img_subsampled, 1)
+        for c = 1:size(output_img_subsampled, 2)
 
             % Get the current pixel into a form we can work with and
             % normalize it
@@ -50,9 +51,16 @@ function output_img = chroma_subsampling(input_filename, scheme)
             px_rgb = reshape((revert_matrix * (px_yCbCr + [0; -0.5; -0.5])) .* 256, [1, 1, 3]);
 
             % Store the resulting pixel into the output image
-            output_img(r,c,:) = px_rgb;
+            output_img_rgb(r,c,:) = px_rgb;
         end
     end
+
+    % Convert output image back to uint8 so it can be displayed
+    output_img_rgb = uint8(output_img_rgb);
+
+    % Save output image
+    imwrite(output_img_rgb, 'output_rgb.png', 'png');
+
     fprintf("Done after %f seconds\n", toc());
 end
 

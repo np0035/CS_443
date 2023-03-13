@@ -1,4 +1,4 @@
-function output_img = rgb_to_ycbcr(input_filename)
+function output_img = rgb_to_ycbcr(input_filename, scheme)
     
     % Matrix for converting to YCbCr
     convert_matrix =    [ 0.299,    0.587,    0.114;
@@ -29,7 +29,10 @@ function output_img = rgb_to_ycbcr(input_filename)
             output_img(r,c,:) = px_yCbCr;
         end
     end
+    % Convert output image back to uint8 so it can be displayed
     output_img = uint8(output_img);
+
+    output_img = subsample_image(output_img, scheme);
     imshow(output_img);
 end
 

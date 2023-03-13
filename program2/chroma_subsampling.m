@@ -1,4 +1,4 @@
-function output_img = rgb_to_ycbcr(input_filename, scheme)
+function output_img = chroma_subsampling(input_filename, scheme)
     
     % Matrix for converting to YCbCr
     convert_matrix =    [ 0.299,    0.587,    0.114;
@@ -44,18 +44,15 @@ function output_img = rgb_to_ycbcr(input_filename, scheme)
 
             % Get the current pixel into a form we can work with and
             % normalize it
-            px_rgb = double(reshape(input_img(r,c,:), [3, 1])) ./ 256;
+            px_yCbCr = double(reshape(output_img_subsampled(r,c,:), [3, 1])) ./ 256;
 
             % Perform the conversion
-            px_yCbCr = reshape(((convert_matrix * px_rgb) + [0; 0.5; 0.5]) .* 256, [1, 1, 3]);
+            px_rgb = reshape((revert_matrix * (px_yCbCr + [0; -0.5; -0.5])) .* 256, [1, 1, 3]);
 
             % Store the resulting pixel into the output image
-            output_img(r,c,:) = px_yCbCr;
+            output_img(r,c,:) = px_rgb;
         end
     end
     fprintf("Done after %f seconds\n", toc());
-
-%     subplot(1,2,1),imshow(output_img);
-%     subplot(1,2,2), imshow(output_img_subsampled);
 end
 

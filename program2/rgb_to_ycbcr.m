@@ -52,7 +52,7 @@ function output_img = rgb_to_ycbcr(input_filename, scheme)
         end
     end
 
-    subplot(1,2,1),imshow(output_img);
-    subplot(1,2,2), imshow(output_img_subsampled);
+%     subplot(1,2,1),imshow(output_img);
+%     subplot(1,2,2), imshow(output_img_subsampled);
 end
 

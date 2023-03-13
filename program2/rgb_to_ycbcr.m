@@ -32,7 +32,8 @@ function output_img = rgb_to_ycbcr(input_filename, scheme)
     % Convert output image back to uint8 so it can be displayed
     output_img = uint8(output_img);
 
-    output_img = subsample_image(output_img, scheme);
-    imshow(output_img);
+    output_img_subsampled = subsample_image(output_img, scheme);
+    subplot(1,2,1),imshow(output_img);
+    subplot(1,2,2), imshow(output_img_subsampled);
 end
 

@@ -3,7 +3,7 @@ function output_img = subsample_image(input_img, scheme)
     % Preallocate image space
     rows = size(input_img, 1);
     cols = size(input_img, 2);
-    output_img = zeros([rows, cols]);
+    output_img = zeros([rows, cols, 3]);
 
     % Iterate over each 2x4 block
     for r = 2:2:rows

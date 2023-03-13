@@ -10,6 +10,8 @@ function output_img = rgb_to_ycbcr(input_filename, scheme)
                           1,       -0.34414, -0.71414;
                           1,        1.77200,  0       ];
 
+    tic();
+    fprintf("Subsampling %s...", input_filename);
     % Read in image
     input_img = imread(input_filename, "png");
     output_img = zeros(size(input_img));
@@ -51,6 +53,7 @@ function output_img = rgb_to_ycbcr(input_filename, scheme)
             output_img(r,c,:) = px_yCbCr;
         end
     end
+    fprintf("Done after %f seconds\n", toc());
 
 %     subplot(1,2,1),imshow(output_img);
 %     subplot(1,2,2), imshow(output_img_subsampled);

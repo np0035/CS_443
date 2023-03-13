@@ -6,6 +6,10 @@ function output_block = subsample_block(input_block, scheme)
     cr = input_block(:,:,3);
 
     switch scheme
+        case "4:4:4"
+            % Do nothing
+            output_block = input_block;
+            
         case "4:2:2"
             % Copy values from first column to second
             cb(:,2) = cb(:,1);
